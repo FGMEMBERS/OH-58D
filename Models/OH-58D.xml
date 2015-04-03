@@ -48,6 +48,7 @@
             <object-name>RightIntake</object-name>
             <object-name>Sensors</object-name>
             <object-name>Sensor</object-name>
+            <object-name>SensorMount</object-name>
             <object-name>LeftAntenna</object-name>
             <object-name>RightAntenna</object-name>
             <object-name>RightFilter</object-name>
@@ -511,7 +512,7 @@
             </placer>
 
             <condition>
-                  <property>sim/model/bo105/particles/enabled</property>
+                  <property>sim/model/oh58/particles/enabled</property>
                   <not>
                         <property>sim/paused</property>
                   </not>
@@ -676,7 +677,7 @@
                   <button>0</button>
                   <binding>
                         <command>nasal</command>
-                        <script>bo105.doors.list[0].toggle()</script>
+                        <script>oh58.doors.list[0].toggle()</script>
                   </binding>
             </action>
       </animation>
@@ -685,7 +686,7 @@
             <type>rotate</type>
             <object-name>PilotDoor</object-name>
             <object-name>PilotGlass</object-name>
-            <property>sim/model/bo105/doors/door[0]/position-norm</property>
+            <property>sim/model/oh58/doors/door[0]/position-norm</property>
             <min-deg>-80</min-deg>
             <factor>80</factor>
             <axis>   
@@ -706,7 +707,7 @@
                   <button>0</button>
                   <binding>
                         <command>nasal</command>
-                        <script>bo105.doors.list[1].toggle()</script>
+                        <script>oh58.doors.list[1].toggle()</script>
                   </binding>
             </action>
       </animation>
@@ -715,7 +716,7 @@
             <type>rotate</type>
             <object-name>CoPilotDoor</object-name>
             <object-name>CoPilotGlass</object-name>
-            <property>sim/model/bo105/doors/door[1]/position-norm</property>
+            <property>sim/model/oh58/doors/door[1]/position-norm</property>
             <min-deg>-80</min-deg>
             <factor>-80</factor>
             <axis>   
@@ -737,7 +738,7 @@
                   <button>0</button>
                   <binding>
                         <command>nasal</command>
-                        <script>bo105.doors.list[2].toggle()</script>
+                        <script>oh58.doors.list[2].toggle()</script>
                   </binding>
             </action>
       </animation>
@@ -747,7 +748,7 @@
             <object-name>RightDoor</object-name>
             <object-name>RightPlate</object-name>
             <object-name>RightGlass</object-name>
-            <property>sim/model/bo105/doors/door[2]/position-norm</property>
+            <property>sim/model/oh58/doors/door[2]/position-norm</property>
             <min-deg>-80</min-deg>
             <factor>80</factor>
             <axis>   
@@ -769,7 +770,7 @@
                   <button>0</button>
                   <binding>
                         <command>nasal</command>
-                        <script>bo105.doors.list[3].toggle()</script>
+                        <script>oh58.doors.list[3].toggle()</script>
                   </binding>
             </action>
       </animation>
@@ -779,7 +780,7 @@
             <object-name>LeftDoor</object-name>
             <object-name>LeftPlate</object-name>
             <object-name>LeftGlass</object-name>
-            <property>sim/model/bo105/doors/door[3]/position-norm</property>
+            <property>sim/model/oh58/doors/door[3]/position-norm</property>
             <min-deg>-80</min-deg>
             <factor>-80</factor>
             <axis>   

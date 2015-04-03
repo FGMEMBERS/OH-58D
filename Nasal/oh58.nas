@@ -1,6 +1,4 @@
-# (c) Melchior FRANZ  < mfranz # flightgear : org >
-
-
+# (c) Melchior Franz & Petar Jedvaj
 
 
 if (!contains(globals, "cprint"))
@@ -24,34 +22,6 @@ var min = func(a, b) a < b ? a : b;
 # timers ============================================================
 aircraft.timer.new("/sim/time/hobbs/helicopter", nil).start();
 
-# strobes ===========================================================
-var strobe_switch = props.globals.initNode("controls/lighting/strobe", 1, "BOOL");
-aircraft.light.new("sim/model/bo105/lighting/strobe-top", [0.05, 1.00], strobe_switch);
-aircraft.light.new("sim/model/bo105/lighting/strobe-bottom", [0.05, 1.03], strobe_switch);
-
-# beacons ===========================================================
-var beacon_switch = props.globals.initNode("controls/lighting/beacon", 1, "BOOL");
-aircraft.light.new("sim/model/bo105/lighting/beacon-top", [0.62, 0.62], beacon_switch);
-aircraft.light.new("sim/model/bo105/lighting/beacon-bottom", [0.63, 0.63], beacon_switch);
-
-
-# nav lights ========================================================
-var nav_light_switch = props.globals.initNode("controls/lighting/nav-lights", 1, "BOOL");
-var visibility = props.globals.getNode("environment/visibility-m", 1);
-var sun_angle = props.globals.getNode("sim/time/sun-angle-rad", 1);
-var nav_lights = props.globals.getNode("sim/model/bo105/lighting/nav-lights", 1);
-
-var nav_light_loop = func {
-	if (nav_light_switch.getValue())
-		nav_lights.setValue(visibility.getValue() < 5000 or sun_angle.getValue() > 1.4);
-	else
-		nav_lights.setValue(0);
-
-	settimer(nav_light_loop, 3);
-}
-
-nav_light_loop();
-
 
 
 # doors =============================================================
@@ -60,7 +30,7 @@ var Doors = {
 		var m = { parents: [Doors] };
 		m.active = 0;
 		m.list = [];
-		foreach (var d; props.globals.getNode("sim/model/bo105/doors").getChildren("door"))
+		foreach (var d; props.globals.getNode("sim/model/oh58/doors").getChildren("door"))
 			append(m.list, aircraft.door.new(d, 2.5));
 		return m;
 	},
@@ -180,8 +150,8 @@ var fuel = {
 var rotor_rpm = props.globals.getNode("rotors/main/rpm");
 var torque = props.globals.getNode("rotors/gear/total-torque", 1);
 var collective = props.globals.getNode("controls/engines/engine[0]/throttle");
-var turbine = props.globals.getNode("sim/model/bo105/turbine-rpm-pct", 1);
-var torque_pct = props.globals.getNode("sim/model/bo105/torque-pct", 1);
+var turbine = props.globals.getNode("sim/model/oh58/turbine-rpm-pct", 1);
+var torque_pct = props.globals.getNode("sim/model/oh58/torque-pct", 1);
 var target_rel_rpm = props.globals.getNode("controls/rotor/reltarget", 1);
 var max_rel_torque = props.globals.getNode("controls/rotor/maxreltorque", 1);
 
@@ -622,7 +592,7 @@ var update_torque = func(dt) {
 
 
 # blade vibration absorber pendulum
-var pendulum = props.globals.getNode("/sim/model/bo105/absorber-angle-deg", 1);
+var pendulum = props.globals.getNode("/sim/model/oh58/absorber-angle-deg", 1);
 var update_absorber = func {
 	pendulum.setDoubleValue(90 * clamp(abs(rotor_rpm.getValue()) / 90));
 }
@@ -711,7 +681,7 @@ var update_stall = func(dt) {
 var Skid = {
 	new: func(n) {
 		var m = { parents: [Skid] };
-		var soundN = props.globals.getNode("sim/model/bo105/sound", 1).getChild("slide", n, 1);
+		var soundN = props.globals.getNode("sim/model/oh58/sound", 1).getChild("slide", n, 1);
 		var gearN = props.globals.getNode("gear", 1).getChild("gear", n, 1);
 
 		m.compressionN = gearN.getNode("compression-norm", 1);
@@ -766,7 +736,7 @@ setlistener("sim/current-view/view-number", func {
 }, 1);
 
 
-var volume = props.globals.getNode("sim/model/bo105/sound/volume", 1);
+var volume = props.globals.getNode("sim/model/oh58/sound/volume", 1);
 var update_volume = func {
 	var door_open = 0;
 	foreach (var d; doors.list) {
@@ -784,14 +754,12 @@ var update_volume = func {
 var crash = func {
 	if (arg[0]) {
 		# crash
-		setprop("sim/model/bo105/tail-angle-deg", 35);
-		setprop("sim/model/bo105/shadow", 0);
-		setprop("sim/model/bo105/doors/door[0]/position-norm", 0.2);
-		setprop("sim/model/bo105/doors/door[1]/position-norm", 0.9);
-		setprop("sim/model/bo105/doors/door[2]/position-norm", 0.2);
-		setprop("sim/model/bo105/doors/door[3]/position-norm", 0.6);
-		setprop("sim/model/bo105/doors/door[4]/position-norm", 0.1);
-		setprop("sim/model/bo105/doors/door[5]/position-norm", 0.05);
+		setprop("sim/model/oh58/tail-angle-deg", 35);
+		setprop("sim/model/oh58/shadow", 0);
+		setprop("sim/model/oh58/doors/door[0]/position-norm", 0.2);
+		setprop("sim/model/oh58/doors/door[1]/position-norm", 0.9);
+		setprop("sim/model/oh58/doors/door[2]/position-norm", 0.2);
+		setprop("sim/model/oh58/doors/door[3]/position-norm", 0.6);
 		setprop("rotors/main/rpm", 0);
 		setprop("rotors/main/blade[0]/flap-deg", -60);
 		setprop("rotors/main/blade[1]/flap-deg", -50);
@@ -812,8 +780,8 @@ var crash = func {
 
 	} else {
 		# uncrash (for replay)
-		setprop("sim/model/bo105/tail-angle-deg", 0);
-		setprop("sim/model/bo105/shadow", 1);
+		setprop("sim/model/oh58/tail-angle-deg", 0);
+		setprop("sim/model/oh58/shadow", 1);
 		doors.reset();
 		setprop("rotors/tail/rpm", 2219);
 		setprop("rotors/main/rpm", 442);
@@ -832,7 +800,7 @@ var crash = func {
 
 
 # "manual" rotor animation for flight data recorder replay ============
-var rotor_step = props.globals.getNode("sim/model/bo105/rotor-step-deg");
+var rotor_step = props.globals.getNode("sim/model/oh58/rotor-step-deg");
 var blade1_pos = props.globals.getNode("rotors/main/blade[0]/position-deg", 1);
 var blade2_pos = props.globals.getNode("rotors/main/blade[1]/position-deg", 1);
 var blade3_pos = props.globals.getNode("rotors/main/blade[2]/position-deg", 1);
@@ -854,310 +822,6 @@ var rotoranim_loop = func {
 var init_rotoranim = func {
 	if (rotor_step.getValue() >= 0.0)
 		settimer(rotoranim_loop, 0.1);
-}
-
-
-
-# Red Cross emblem ==================================================
-var determine_emblem = func {
-	# Use the appropriate internationally acknowleged protective Red Cross/Crescent/Crystal
-	# symbol, depending on the starting airport. (http://www.ifrc.org/ADDRESS/directory.asp)
-
-	var C = 1;	# Red Cross
-	var L = 2;	# Red Crescent (opening left)
-	var R = 3;	# Red Crescent (opening right)
-	var Y = 4;	# Red Crystal
-	var X = 5;	# StarOfLife
-
-	var emblem = [
-		["<none>",       "Textures/empty.png"],
-		["Red Cross",    "Textures/Emblems/red-cross.png"],
-		["Red Crescent", "Textures/Emblems/red-crescent-l.png"],
-		["Red Crescent", "Textures/Emblems/red-crescent-r.png"],
-		["Red Crystal",  "Textures/Emblems/red-crystal.png"],
-		["Star of Life", "Textures/Emblems/star-of-life.png"],
-	];
-
-	var icao = [
-		["",	C, "<default>"],
-		["DA",	R, "Algeria"],
-		["DT",	L, "Tunisia"],
-		["GM",	R, "Morocco"],
-		["GQ",	R, "Mauritania"],
-		["HC",	R, "Somalia"],
-		["HD",	R, "Djibouti"],
-		["HE",	R, "Egypt"],
-		["HL",	R, "Libyan Arab Jamahiriya"],
-		["HS",	R, "Sudan"],
-		["LL",	Y, "Israel"],
-		["LO",	C, "Austria"],
-		["LT",	L, "Turkey"],
-		["LV",	R, "Palestine"],
-		["OA",	R, "Afghanistan"],
-		["OB",	R, "Bahrain"],
-		["OE",	R, "Saudi Arabia"],
-		["OI",	R, "Islamic Republic of Iran"],
-		["OJ",	R, "Jordan"],
-		["OK",	R, "Kuwait"],
-		["OM",	R, "United Arab Emirates"],
-		["OP",	L, "Pakistan"],
-		["OR",	R, "Iraq"],
-		["OS",	R, "Syrian Arab Republic"],
-		["OT",	R, "Qatar"],
-		["OY",	R, "Yemen"],
-		["UA",	R, "Kazakhstan"],
-		["UAF",	L, "Kyrgyzstan"],
-		["UB",	L, "Azerbaidjan"],
-		["UT",	L, "Uzbekistan"],
-		["UTA",	L, "Turkmenistan"],
-		["UTD",	R, "Tajikistan"],
-		["VG",	R, "Bangladesh"],
-		["WB",	R, "Malaysia"],
-		["WBAK",R, "Brunei Darussalam"],
-		["WBSB",R, "Brunei Darussalam"],
-		["WM",	R, "Malaysia"],
-	];
-
-	var apt = airportinfo().id;
-	var country = nil;
-	var maxlen = -1;
-
-	foreach (var entry; icao) {
-		var len = size(entry[0]);
-		if (substr(apt, 0, len) == entry[0]) {
-			if (len > maxlen) {
-				maxlen = len;
-				country = entry;
-			}
-		}
-	}
-	printlog("info", "bo105: ", apt ~ "/" ~ country[2] ~ " >> " ~ emblem[country[1]][0]);
-	return emblem[country[1]][1];
-}
-
-
-
-# weapons ===========================================================
-
-# aircraft.weapon.new(
-#	<property>,
-#	<submodel-index>,
-#	<capacity>,
-#	<drop-weight>,		# dropped weight per shot round/missile
-#	<base-weight>		# remaining empty weight
-#	[, <submodel-factor>	# one reported submodel counts for how many items
-#	[, <weight-prop>]]);	# where to put the calculated weight
-var Weapon = {
-	new: func(prop, ndx, cap, dropw, basew, fac = 1, wprop = nil) {
-		var m = { parents: [Weapon] };
-		m.node = aircraft.makeNode(prop);
-		m.enabledN = m.node.getNode("enabled", 1);
-		m.enabledN.setBoolValue(0);
-
-		m.triggerN = m.node.getNode("trigger", 1);
-		m.triggerN.setBoolValue(0);
-
-		m.countN = m.node.getNode("count", 1);
-		m.countN.setIntValue(0);
-
-		m.sm_countN = props.globals.getNode("ai/submodels/submodel[" ~ ndx ~ "]/count", 1);
-		m.sm_countN.setValue(0);
-
-		m.capacity = cap;
-		m.dropweight = dropw * 2.2046226;	# kg2lbs
-		m.baseweight = basew * 2.2046226;
-		m.ratio = fac;
-
-		if (wprop != nil)
-			m.weightN = aircraft.makeNode(wprop);
-		else
-			m.weightN = m.node.getNode("weight-lb", 1);
-		return m;
-	},
-	enable: func {
-		me.fire(0);
-		me.enabledN.setBoolValue(arg[0]);
-		me.update();
-		me;
-	},
-	setammo: func {
-		me.sm_countN.setValue(arg[0] / me.ratio);
-		me.update();
-		me;
-	},
-	getammo: func {
-		me.countN.getValue();
-	},
-	getweight: func {
-		me.weightN.getValue();
-	},
-	reload: func {
-		me.fire(0);
-		me.setammo(me.capacity);
-		me;
-	},
-	update: func {
-		if (me.enabledN.getValue()) {
-			me.countN.setValue(me.sm_countN.getValue() * me.ratio);
-			me.weightN.setValue(me.baseweight + me.countN.getValue() * me.dropweight);
-		} else {
-			me.countN.setValue(0);
-			me.weightN.setValue(0);
-		}
-	},
-	fire: func(t) {
-		me.triggerN.setBoolValue(t);
-		if (t)
-			me._loop_();
-	},
-	_loop_: func {
-		me.update();
-		if (me.triggerN.getBoolValue() and me.enabledN.getValue() and me.countN.getValue())
-			settimer(func me._loop_(), 1);
-	},
-};
-
-
-# "name", <ammo-desc>
-var WeaponSystem = {
-	new: func(name, adesc) {
-		var m = { parents: [WeaponSystem] };
-		m.name = name;
-		m.ammunition_type = adesc;
-		m.weapons = [];
-		m.enabled = 0;
-		m.select = 0;
-		return m;
-	},
-	add: func {
-		append(me.weapons, arg[0]);
-	},
-	reload: func {
-		me.select = 0;
-		foreach (w; me.weapons)
-			w.reload();
-	},
-	fire: func {
-		foreach (w; me.weapons)
-			w.fire(arg[0]);
-	},
-	getammo: func {
-		var n = 0;
-		foreach (w; me.weapons)
-			n += w.getammo();
-		return n;
-	},
-	ammodesc: func {
-		me.ammunition_type;
-	},
-	disable: func {
-		me.enabled = 0;
-		foreach (w; me.weapons)
-			w.enable(0);
-	},
-	enable: func {
-		me.select = 0;
-		foreach (w; me.weapons) {
-			w.enable(1);
-			w.reload();
-		}
-		me.enabled = 1;
-	},
-};
-
-
-var weapons = nil;
-var MG = nil;
-var HOT = nil;
-var TRIGGER = -1;
-
-var init_weapons = func {
-	MG = WeaponSystem.new("M134", "rounds (7.62 mm)");
-	# propellant: 2.98 g + bullet: 9.75 g  ->  0.0127 kg
-	# M134 minigun: 18.8 kg + M27 armament subsystem: ??  ->
-	MG.add(Weapon.new("sim/model/bo105/weapons/MG[0]", 0, 4000, 0.0127, 100, 10));
-	MG.add(Weapon.new("sim/model/bo105/weapons/MG[1]", 1, 4000, 0.0127, 100, 10));
-
-	HOT = WeaponSystem.new("HOT", "missiles");
-	# 24 kg; missile + tube: 32 kg
-	HOT.add(Weapon.new("sim/model/bo105/weapons/HOT[0]", 2, 1, 24, 20));
-	HOT.add(Weapon.new("sim/model/bo105/weapons/HOT[1]", 3, 1, 24, 20));
-	HOT.add(Weapon.new("sim/model/bo105/weapons/HOT[2]", 4, 1, 24, 20));
-	HOT.add(Weapon.new("sim/model/bo105/weapons/HOT[3]", 5, 1, 24, 20));
-	HOT.add(Weapon.new("sim/model/bo105/weapons/HOT[4]", 6, 1, 24, 20));
-	HOT.add(Weapon.new("sim/model/bo105/weapons/HOT[5]", 7, 1, 24, 20));
-
-	HOT.fire = func(trigger) {
-		if (!trigger or me.select >= size(me.weapons))
-			return;
-
-		var wp = me.weapons[me.select];
-		wp.fire(1);
-		settimer(func wp.fire(0), 1.5);
-		var weight = wp.weightN.getValue();
-		wp.weightN.setValue(weight + 300);	# shake the bo
-		settimer(func wp.weightN.setValue(weight), 0.3);
-		me.select += 1;
-	}
-
-	setlistener("/sim/model/bo105/weapons/impact/HOT", func(n) {
-		var node = props.globals.getNode(n.getValue(), 1);
-		var impact = geo.Coord.new().set_latlon(
-				node.getNode("impact/latitude-deg").getValue(),
-				node.getNode("impact/longitude-deg").getValue(),
-				node.getNode("impact/elevation-m").getValue());
-
-		geo.put_model("Aircraft/bo105/Models/hot.ac", impact,
-		#geo.put_model("Models/Power/coolingtower.xml", impact,
-				node.getNode("impact/heading-deg").getValue(),
-				node.getNode("impact/pitch-deg").getValue(),
-				node.getNode("impact/roll-deg").getValue());
-		screen.log.write(sprintf("%.3f km",
-				geo.aircraft_position().distance_to(impact) / 1000), 1, 0.9, 0.9);
-
-		fgcommand("play-audio-sample", props.Node.new({
-			path : getprop("/sim/fg-root") ~ "/Aircraft/bo105/Sounds",
-			file : "HOT.wav",
-			volume : 0.2,
-		}));
-	});
-
-	#setlistener("/sim/model/bo105/weapons/impact/MG", func(n) {
-	#	var node = props.globals.getNode(n.getValue(), 1);
-	#	geo.put_model("Models/Airport/ils.xml",
-	#			node.getNode("impact/latitude-deg").getValue(),
-	#			node.getNode("impact/longitude-deg").getValue(),
-	#			node.getNode("impact/elevation-m").getValue(),
-	#			node.getNode("impact/heading-deg").getValue(),
-	#			node.getNode("impact/pitch-deg").getValue(),
-	#			node.getNode("impact/roll-deg").getValue());
-	#});
-
-	var triggerL = setlistener("controls/armament/trigger", func(n) {
-		if (weapons != nil) {
-			var t = n.getBoolValue();
-			if (!getprop("/sim/ai/enabled")) {
-				print("*** weapons work only with --prop:sim/ai/enabled=1 ***");
-				return removelistener(triggerL);
-			}
-			if (t != TRIGGER)
-				weapons.fire(TRIGGER = t);
-		}
-	});
-
-	controls.applyBrakes = func(v) setprop("controls/armament/trigger", v);
-}
-
-
-# called from Dialogs/config.xml
-var get_ammunition = func {
-	weapons != nil ? weapons.getammo() ~ " " ~ weapons.ammodesc() : "";
-}
-
-
-var reload = func {
-	if (weapons != nil)
-		weapons.reload();
 }
 
 
@@ -1237,39 +901,6 @@ setlistener("/sim/startup/ysize", adjust_fov, 1);
 
 
 
-# livery/configuration ==============================================
-
-aircraft.livery.init("Aircraft/bo105/Models/Variants", "sim/model/bo105/name");
-
-var reconfigure = func {
-	if (weapons != nil) {
-		weapons.disable();
-		weapons = nil;
-	}
-
-	if (getprop("/sim/model/bo105/missiles"))
-		weapons = HOT;
-	elsif (getprop("/sim/model/bo105/miniguns"))
-		weapons = MG;
-
-	if (weapons != nil)
-		weapons.enable();
-
-	var emblemN = props.globals.getNode("/sim/model/bo105/material/emblem/texture");
-	var emblem = emblemN.getValue();
-	if (emblem == "RED-CROSS")
-		emblemN.setValue(emblem = rc_emblem);
-	elsif (emblem == "INSIGNIA")
-		emblemN.setValue(emblem = getprop("/sim/model/bo105/insignia"));
-	if (substr(emblem, 0, 17) == "Textures/Emblems/")
-		emblem = substr(emblem, 17);
-	if (substr(emblem, -4) == ".png")
-		emblem = substr(emblem, 0, size(emblem) - 4);
-	setprop("sim/multiplay/generic/string[0]", emblem);
-}
-
-
-
 # main() ============================================================
 var delta_time = props.globals.getNode("/sim/time/delta-sec", 1);
 var hi_heading = props.globals.getNode("/instrumentation/heading-indicator/indicated-heading-deg", 1);
@@ -1302,9 +933,7 @@ var main_loop = func {
 
 var replay = 0;
 var crashed = 0;
-var rc_emblem = determine_emblem();
 var doors = Doors.new();
-var config_dialog = gui.Dialog.new("/sim/gui/dialogs/bo105/config/dialog", "Aircraft/bo105/Dialogs/config.xml");
 
 var first_init = 1;
 
@@ -1319,9 +948,6 @@ setlistener("/sim/signals/fdm-initialized", func {
 	fuel.init();
 	mouse.init();
 
-	init_weapons();
-	setlistener("/sim/model/livery/file", reconfigure, 1);
-
 	collective.setDoubleValue(1);
 
 	setlistener("/sim/signals/reinit", func(n) {
@@ -1329,7 +955,6 @@ setlistener("/sim/signals/fdm-initialized", func {
 		cprint("32;1", "reinit");
 		procedure.reset();
 		collective.setDoubleValue(1);
-		aircraft.livery.rescan();
 		reconfigure();
 		if (crashed)
 			crash(crashed = 0);
@@ -1354,5 +979,3 @@ setlistener("/sim/signals/fdm-initialized", func {
 	if (devel and quickstart)
 		engines.quickstart();
 });
-
-

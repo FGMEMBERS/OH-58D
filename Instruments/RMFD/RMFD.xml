@@ -9,10 +9,25 @@
         <object-name>LCD</object-name>
         <object-name>Face</object-name>
         <object-name>Pitch</object-name>
-        <object-name>AI</object-name>
+        <object-name>Ladder</object-name>
         <object-name>AOA</object-name>
         <object-name>Ring</object-name>
         <object-name>Compass</object-name>
+        <object-name>TP.001</object-name>
+        <object-name>TP.002</object-name>
+        <object-name>TP.003</object-name>
+        <object-name>RPM.001</object-name>
+        <object-name>RPM.002</object-name>
+        <object-name>RPM.003</object-name>
+        <object-name>EQ.001</object-name>
+        <object-name>HI.001</object-name>
+        <object-name>HI.002</object-name>
+        <object-name>HI.003</object-name>
+        <object-name>HI.004</object-name>
+        <object-name>LO.001</object-name>
+        <object-name>LO.002</object-name>
+        <object-name>LO.003</object-name>
+        <object-name>LO.004</object-name>
         <object-name>ASI.001</object-name>
         <object-name>ASI.002</object-name>
         <object-name>ASI.003</object-name>
@@ -21,14 +36,140 @@
         <object-name>ALT.003</object-name>
         <object-name>ALT.004</object-name>
         <object-name>ALT.005</object-name>
-        <object-name>HI.001</object-name>
-        <object-name>HI.002</object-name>
-        <object-name>HI.003</object-name>
+        <object-name>HDG.001</object-name>
+        <object-name>HDG.002</object-name>
+        <object-name>HDG.003</object-name>
         <emission>
 		<red>1</red>
 		<green>1</green>
 		<blue>1</blue>
         </emission>
+    </animation>
+
+<!-- TP Indicator -->
+    
+    <animation>
+        <type>textranslate</type>
+        <object-name>TP.003</object-name>
+        <property>sim/model/oh58/torque-pct</property>
+        <factor>0.001</factor>
+        <step>100</step>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+    
+    <animation>
+        <type>select</type>
+        <object-name>TP.003</object-name>
+        <condition>
+            <greater-than-equals>
+                <property>sim/model/oh58/torque-pct</property>
+                <value>100</value>
+            </greater-than-equals>
+        </condition>
+    </animation>
+    
+    <animation>
+        <type>textranslate</type>
+        <object-name>TP.002</object-name>
+        <property>sim/model/oh58/torque-pct</property>
+        <factor>0.01</factor>
+        <step>10</step>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+    
+    <animation>
+        <type>select</type>
+        <object-name>TP.002</object-name>
+        <condition>
+            <greater-than-equals>
+                <property>sim/model/oh58/torque-pct</property>
+                <value>10</value>
+            </greater-than-equals>
+        </condition>
+    </animation>
+    
+    <animation>
+        <type>textranslate</type>
+        <object-name>TP.001</object-name>
+        <property>sim/model/oh58/torque-pct</property>
+        <factor>0.1</factor>
+        <step>1</step>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+
+<!-- RPM Indicator -->
+    
+    <animation>
+        <type>textranslate</type>
+        <object-name>RPM.003</object-name>
+        <property>engines/engine[0]/n2-pct</property>
+        <factor>0.001</factor>
+        <step>100</step>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+    
+    <animation>
+        <type>select</type>
+        <object-name>RPM.003</object-name>
+        <condition>
+            <greater-than-equals>
+                <property>engines/engine[0]/n2-pct</property>
+                <value>100</value>
+            </greater-than-equals>
+        </condition>
+    </animation>
+    
+    <animation>
+        <type>textranslate</type>
+        <object-name>RPM.002</object-name>
+        <property>engines/engine[0]/n2-pct</property>
+        <factor>0.01</factor>
+        <step>10</step>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
+    </animation>
+    
+    <animation>
+        <type>select</type>
+        <object-name>RPM.002</object-name>
+        <condition>
+            <greater-than-equals>
+                <property>engines/engine[0]/n2-pct</property>
+                <value>10</value>
+            </greater-than-equals>
+        </condition>
+    </animation>
+    
+    <animation>
+        <type>textranslate</type>
+        <object-name>RPM.001</object-name>
+        <property>engines/engine[0]/n2-pct</property>
+        <factor>0.1</factor>
+        <step>1</step>
+        <axis>
+            <x>1</x>
+            <y>0</y>
+            <z>0</z>
+        </axis>
     </animation>
     
 <!-- Angle of Attack -->
@@ -37,7 +178,7 @@
         <type>translate</type>
         <object-name>AOA</object-name>
         <property>orientation/alpha-deg</property>
-        <factor>0.0011</factor>
+        <factor>0.000192</factor>
         <axis>
             <x>0.0</x>
             <y>0.0</y>
@@ -56,7 +197,7 @@
 		<type>textranslate</type>
 		<object-name>Compass</object-name>
 		<property>instrumentation/magnetic-compass/indicated-heading-deg</property>
-		<factor>0.0033</factor>
+		<factor>0.0035</factor>
 		<step>1</step>
         <axis>
             <x>1</x>
@@ -70,6 +211,7 @@
     <animation>
 		<type>rotate</type>
 		<object-name>Face</object-name>
+        <object-name>Ladder</object-name>
 		<property>orientation/roll-deg</property>
 		<factor>-1</factor>
 		<axis>
@@ -111,17 +253,19 @@
 	</animation>
 
     <animation>
-        <type>textranslate</type>
-        <object-name>AI</object-name>
-        <property>orientation/pitch-deg</property>
-        <factor>0.00167</factor>
-        <step>1</step>
-        <axis>
-            <x>0</x>
-            <y>0</y>
-            <z>1</z>
-        </axis>
-    </animation>  
+        <type>texmultiple</type>
+        <object-name>Ladder</object-name>
+        <transform>
+            <property>orientation/pitch-deg</property>
+            <subtype>textranslate</subtype>
+            <factor>0.00167</factor>
+            <axis>
+                <x>0</x>
+                <y>1</y>
+                <z>0</z>
+            </axis>
+        </transform>
+    </animation>
 	
 <!-- Air Speed Indicator -->
 	
@@ -191,7 +335,7 @@
     <animation>
         <type>textranslate</type>
         <object-name>ALT.003</object-name>
-        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+        <property>/position/altitude-agl-ft</property>
         <factor>0.001</factor>
         <step>100</step>
         <axis>
@@ -206,7 +350,7 @@
 		<object-name>ALT.003</object-name>
 		<condition>
 			<greater-than-equals>
-				<property>/instrumentation/altimeter/indicated-altitude-ft</property>
+				<property>/position/altitude-agl-ft</property>
 				<value>100</value>
 			</greater-than-equals>
 		</condition>
@@ -215,7 +359,7 @@
     <animation>
         <type>textranslate</type>
         <object-name>ALT.004</object-name>
-        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+        <property>/position/altitude-agl-ft</property>
         <factor>0.0001</factor>
         <step>1000</step>
         <scroll>20</scroll>
@@ -231,7 +375,7 @@
 		<object-name>ALT.004</object-name>
 		<condition>
 			<greater-than-equals>
-				<property>/instrumentation/altimeter/indicated-altitude-ft</property>
+				<property>/position/altitude-agl-ft</property>
 				<value>1000</value>
 			</greater-than-equals>
 		</condition>
@@ -240,7 +384,7 @@
     <animation>
         <type>textranslate</type>
         <object-name>ALT.005</object-name>
-        <property>/instrumentation/altimeter/indicated-altitude-ft</property>
+        <property>/position/altitude-agl-ft</property>
         <factor>0.00001</factor>
         <step>10000</step>
         <scroll>20</scroll>
@@ -256,7 +400,7 @@
 		<object-name>ALT.005</object-name>
 		<condition>
 			<greater-than-equals>
-				<property>/instrumentation/altimeter/indicated-altitude-ft</property>
+				<property>/position/altitude-agl-ft</property>
 				<value>10000</value>
 			</greater-than-equals>
 		</condition>
@@ -267,7 +411,7 @@
 		<object-name>ALT.002</object-name>
 		<condition>
 			<greater-than-equals>
-				<property>/instrumentation/altimeter/indicated-altitude-ft</property>
+				<property>/position/altitude-agl-ft</property>
 				<value>10</value>
 			</greater-than-equals>
 		</condition>
@@ -277,7 +421,7 @@
     
     <animation>
         <type>textranslate</type>
-        <object-name>HI.003</object-name>
+        <object-name>HDG.003</object-name>
         <property>/instrumentation/heading-indicator/indicated-heading-deg</property>
         <factor>0.001</factor>
         <step>100</step>
@@ -290,7 +434,7 @@
     
     <animation>
 		<type>select</type>
-		<object-name>HI.003</object-name>
+		<object-name>HDG.003</object-name>
 		<condition>
 			<greater-than-equals>
 				<property>/instrumentation/heading-indicator/indicated-heading-deg</property>
@@ -301,7 +445,7 @@
     
     <animation>
         <type>textranslate</type>
-        <object-name>HI.002</object-name>
+        <object-name>HDG.002</object-name>
         <property>/instrumentation/heading-indicator/indicated-heading-deg</property>
         <factor>0.01</factor>
         <step>10</step>
@@ -314,7 +458,7 @@
     
     <animation>
 		<type>select</type>
-		<object-name>HI.002</object-name>
+		<object-name>HDG.002</object-name>
 		<condition>
 			<greater-than-equals>
 				<property>/instrumentation/heading-indicator/indicated-heading-deg</property>
@@ -325,7 +469,7 @@
     
     <animation>
         <type>textranslate</type>
-        <object-name>HI.001</object-name>
+        <object-name>HDG.001</object-name>
         <property>/instrumentation/heading-indicator/indicated-heading-deg</property>
         <factor>0.1</factor>
         <step>1</step>

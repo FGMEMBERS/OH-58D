@@ -6,10 +6,6 @@
 		<model>
 			<livery>
 				<name type="string">FGUK</name>
-				<pylons type="bool">false</pylons>
-				<doors type="bool">true</doors>
-				<plates type="bool">false</plates>
-				<filters type="bool">false</filters>
 				<texture>Liveries/FGUK.png</texture>
 			</livery>
 			<livery-logo>

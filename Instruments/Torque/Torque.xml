@@ -18,7 +18,7 @@
 	<animation>
 		<type>translate</type>
 		<object-name>LTQ</object-name>
-		<property>sim/model/bo105/torque-pct</property>
+		<property>sim/model/oh58/torque-pct</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind><dep>0.0</dep>
@@ -37,7 +37,7 @@
 	<animation>
 		<type>translate</type>
 		<object-name>RTQ</object-name>
-		<property>sim/model/bo105/torque-pct</property>
+		<property>sim/model/oh58/torque-pct</property>
 		<interpolation>
 			<entry>
 				<ind>0.0</ind><dep>0.0</dep>

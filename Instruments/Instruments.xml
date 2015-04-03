@@ -47,8 +47,8 @@
 	</model>
 
 	<model>
-		<name>Weapons</name>
-		<path>Aircraft/OH-58D/Instruments/Weapons/Weapons.xml</path>
+		<name>TACAN</name>
+		<path>Aircraft/OH-58D/Instruments/TACAN/TACAN.xml</path>
 		<offsets>
 			<x-m>-1.8922</x-m>
 			<y-m>-0.0035</y-m>
